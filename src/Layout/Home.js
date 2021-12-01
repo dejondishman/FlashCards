@@ -43,7 +43,7 @@ return (
   <div className="card-body">
     <h5 className="card-title">{deck.name}</h5>
     <p className="card-text">{deck.description}</p>
-    <p className="card-text"><small class="text-muted">{deck.cards.length} cards</small></p>
+    <p class="card-text"><small class="text-muted">{deck.cards.length} cards</small></p>
 
     <Link to={`/decks/${deck.id}`}className="btn btn-secondary">View</Link>  
     <Link to={`/decks/${deck.id}/study`} className="btn btn-primary">Study</Link>

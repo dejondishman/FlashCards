@@ -1,94 +1,111 @@
-import { Link, useParams, useHistory } from "react-router-dom";
+import { createDeck, readDeck, readCard,updateCard } from "../utils/api";
+import { useParams, Link, useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import {readDeck, updateDeck} from "../utils/api/index"
 
-function EditDeck({ decks, setDecks }) {
-    const initializedState = {
-      id: "",
-      name: "",
-      description: "",
-      cards: [],
-    };
+export default function EditCard() {
 
-    const params = useParams();
-    const [deck, setDeck] = useState(initializedState);
-   let history=useHistory()
-  
-    
-    useEffect(() => {
-      async function loadDeck() {
-        const deckFromAPI = await readDeck(params.deckId);
-        setDeck(deckFromAPI);
-      }
-      loadDeck();
-    }, [params.deckId]);
-
-    function handleChange({target}){
-        setDeck({
-          ...deck,
-          [target.name]: target.value,
-        });
+    const initializedCardState = {
+        id: "",
+        front: "",
+        back: "",
+        deckId: "",
       };
 
-      async function handleSubmit(event) {
-        event.preventDefault()
-        await updateDeck(deck);
-        
-        history.push(`/decks/${deck.id}`)
-      }
+    const initializedDeckState = {
+        id: "",
+        name: "",
+        description: "",
+        cards: [],
+      };
 
-    return(
-        <>
-    <nav aria-label="breadcrumb">
-        <ol className="breadcrumb">
-        <li className="breadcrumb-item"><Link to='/'>Home</Link></li>
-        <li className="breadcrumb-item">{deck.name}</li>
-        <li className="breadcrumb-item active" aria-current="page">Study</li>
-        </ol>
-    </nav>
+  const history = useHistory();
+  const params = useParams();
+  const [card, setCard] = useState(initializedCardState);
+  const [deck, setDeck] = useState(initializedDeckState);
+
+  useEffect(() => {
+    async function loadDeck() {
+      const deckFromAPI = await readDeck(params.deckId);
+      setDeck(deckFromAPI);
+    }
+    loadDeck();
+  }, [params.deckId]);
+
+  useEffect(() => {
+    async function loadCard() {
+      const cardFromAPI = await readCard(params.cardId);
+      setCard(cardFromAPI);
+    }
+    loadCard();
+  }, [params.cardId]);
+
+  function handleChange({target}){
+    setCard({
+      ...card,
+      [target.name]: target.value,
+    });
+  };
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    await updateCard(card);
+    history.push(`/decks/${deck.id}`)
+  }
+
+  return (
     <div>
-        <h1>Create Deck</h1>
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <Link to="/">Home</Link>
+            </li>
+            <li className="breadcrumb-item">Deck {deck.name}</li>
+            <li className="breadcrumb-item">Edit Card {card.id}</li>
+          </ol>
+        </nav>
+      </div>
+
+      <div>
+        <h1>{deck.name}: Add Card</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
+            <label htmlFor="front">Front</label>
+            <textarea
               type="text"
               className="form-control"
-              id="name"
-              name="name"
-              placeholder="Deck Name"
+              id="front"
+              rows="3"
+              name="front"
+              placeholder="Front side of card"
               onChange={handleChange}
-              value={deck.name}
-            />
+              value={card.front}
+            ></textarea>
           </div>
-    <div className="form-group">
-            <label htmlFor="description">Description</label>
+          <div className="form-group">
+            <label htmlFor="back">Back</label>
             <textarea
               className="form-control"
-              id="description"
-              placeholder="Brief Description of the Deck"
+              id="back"
+              placeholder="Back side of card"
               rows="3"
-              name="description"
+              name="back"
               onChange={handleChange}
-              value={deck.description}
+              value={card.back}
             ></textarea>
           </div>
           <button
-            type="cancel"
+            type="done"
             className="btn btn-secondary"
-            onClick={() => history.push("/")}
+            onClick={() => history.push(`/decks/${params.deckId}`)}
           >
-            Cancel
+            Done
           </button>
-         <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary">
             Submit
           </button>
         </form>
       </div>
-    </>
-    
-    )
-    
+    </div>
+  );
 }
-
-export default EditDeck

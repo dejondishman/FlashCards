@@ -61,46 +61,52 @@ async function deleteDeckHandler(deckId){
             <li className="breadcrumb-item">
               <Link to="/">Home</Link>
             </li>
-            <li className="breadcrumb-item">{deck.name}</li>
+            <li className="breadcrumb-item">Deck {deck.name}</li>
+            <li className="breadcrumb-item">Edit Card {card.id}</li>
           </ol>
         </nav>
       </div>
 
       <div>
-        <h3>{deck.name}</h3>
-        <p>{deck.description}</p>
-        <Link to={`/decks/${deck.id}/edit`} class="btn btn-secondary">
-          Edit
-        </Link>
-        <Link to={`/decks/${deck.id}/study`} class="btn btn-primary">
-          Study
-        </Link>
-        <Link to={`/decks/${deck.id}/cards/new`} class="btn btn-primary">
-          Add Cards
-        </Link>
-        <button type="delete" class="btn btn-danger" onClick={()=>deleteDeckHandler(deck.id)}>
-          Delete
-        </button>
-        <h2>Cards</h2>
-        {console.log(deck.cards)}
-        {deck.cards.map((card, index) => (
-          <div class="card">
-            <div class="card-body">
-              <p class="card-text">{card.front}</p>
-              <p class="card-text">{card.back}</p>
-              <Link
-               to={`/decks/${deck.id}/cards/${card.id}/edit`}
-                class="btn btn-secondary"
-              >
-                Edit
-              </Link>
-              <button onClick={()=> deleteCardHandler(card.id)} type="delete" class="btn btn-danger">
-                Delete
-              </button>
-            </div>
+        <h1>{deck.name}: Add Card</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="front">Front</label>
+            <textarea
+              type="text"
+              className="form-control"
+              id="front"
+              rows="3"
+              name="front"
+              placeholder="Front side of card"
+              onChange={handleChange}
+              value={card.front}
+            ></textarea>
           </div>
-        ))}
+          <div className="form-group">
+            <label htmlFor="back">Back</label>
+            <textarea
+              className="form-control"
+              id="back"
+              placeholder="Back side of card"
+              rows="3"
+              name="back"
+              onChange={handleChange}
+              value={card.back}
+            ></textarea>
+          </div>
+          <button
+            type="done"
+            className="btn btn-secondary"
+            onClick={() => history.push(`/decks/${params.deckId}`)}
+          >
+            Done
+          </button>
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );
-        }
+}
