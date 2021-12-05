@@ -1,67 +1,71 @@
 import React, { useState } from "react";
-import { createDeck } from "../utils/api/index";
-import { Link, useHistory } from "react-router-dom";
 
-function CreateDeck({ decks, setDecks }) {
+import { Link, useHistory, useParams } from "react-router-dom";
+import {createDeck} from '../utils/api/index' 
+
+export default function CreateDeck({ decks, setDecks }) {
+
   const initialState= {
-    id: decks.length + 1,
-    name: "",
-    description: "",
+    id:decks.length + 1,
+    name:"",
+    description:""
   }
-  const [deck, setDeck] = useState(initialState);
+
+  const [deck, setDeck] = useState({});
   let history = useHistory();
-  
+  const params = useParams();
+
   function handleChange({target}){
     setDeck({
       ...deck,
-      [target.name]: target.value,
-    });
-  };
+      [target.name]: target.value
+    })
+  }
 
   async function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
     await createDeck(deck);
-    setDecks([...decks, deck]);
+    setDecks([...decks, deck])
     setDeck(initialState)
-    history.push(`/decks/${decks.length+1}`)
+    history.push(`/decks/${decks.length + 1}`)
   }
-  
+
+//added on click to submit button changed it to link, dont know if it works
   return (
     <>
-      <nav aria-label="breadcrumb">
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            Create Deck
-          </li>
-        </ol>
-      </nav>
-
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <Link to="/">Home</Link>
+            </li>
+            <li className="breadcrumb-item">Create Deck</li>{" "}
+          </ol>
+        </nav>
+      </div>
       <div>
         <h1>Create Deck</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label for="exampleFormControlInput1">Name</label>
             <input
               type="text"
               className="form-control"
-              id="name"
               name="name"
+              id="exampleFormControlInput1"
               placeholder="Deck Name"
               onChange={handleChange}
               value={deck.name}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label for="exampleFormControlTextarea1">Description</label>
             <textarea
               className="form-control"
-              id="description"
+              name="description"
+              id="exampleFormControlTextarea1"
               placeholder="Brief Description of the Deck"
               rows="3"
-              name="description"
               onChange={handleChange}
               value={deck.description}
             ></textarea>
@@ -73,13 +77,11 @@ function CreateDeck({ decks, setDecks }) {
           >
             Cancel
           </button>
-         <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
+          <button className="btn btn-primary" type="submit">
+              Sumbit
+            </button>
         </form>
       </div>
     </>
   );
 }
-
-export default CreateDeck;

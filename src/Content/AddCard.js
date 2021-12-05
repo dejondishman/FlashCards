@@ -1,11 +1,10 @@
 import {Link, useParams, useHistory} from 'react-router-dom'
-import React, {useEffect, useState} from 'react'
-import {readDeck, readCard, updateCard} from '../utils/api/index'
+import {useEffect, useState} from 'react'
+import {readDeck, createCard} from '../utils/api/index'
 
 
 export default function AddCard() {
-    
-  
+
     const initializedCardState = {
         id: "",
         front: "",
@@ -28,29 +27,12 @@ export default function AddCard() {
     let history = useHistory();
 
     useEffect(() => {
-      async function loadDeck() {
-        const deckFromAPI = await readDeck(params.deckId);
-        setDeck(deckFromAPI);
-      }
-      loadDeck();
-    }, [params.deckId]);
-
-    useEffect(() => {
-      async function loadDeck() {
-        const deckFromAPI = await readDeck(params.deckId);
-        setDeck(deckFromAPI);
-      }
-      loadDeck();
-    }, [params.deckId]);
-
-    useEffect(() => {
-      async function loadCard() {
-        const cardFromAPI = await readDeck(params.deckId);
-        setDeck(cardFromAPI);
-      }
-      loadCard();
-    }, [params.deckId]);
-
+        async function loadDeck() {
+          const deckFromAPI = await readDeck(params.deckId);
+          setDeck(deckFromAPI);
+        };
+        loadDeck();
+      }, [params.deckId]);
 
     function handleChange({target}){
         setCard({
@@ -61,7 +43,7 @@ export default function AddCard() {
     
     async function handleSubmit(event) {
         event.preventDefault();
-        await AddCard(params.deckId, card);
+        await createCard(params.deckId, card);
         setCard(initializedCardState)
       }
 
@@ -92,7 +74,7 @@ export default function AddCard() {
       id="front"
       rows="3"
       name="front"
-      placeholder={card.front}
+      placeholder="Front side of card"
       onChange={handleChange}
       value={card.front}
     ></textarea>
@@ -102,7 +84,7 @@ export default function AddCard() {
     <textarea
       className="form-control"
       id="back"
-      placeholder={card.back}
+      placeholder="Back side of card"
       rows="3"
       name="back"
       onChange={handleChange}
@@ -110,20 +92,18 @@ export default function AddCard() {
     ></textarea>
   </div>
   <button
-    type="cancel"
+    type="done"
     className="btn btn-secondary"
     onClick={() => history.push(`/decks/${params.deckId}`)}
   >
-    Cancel
+    Done
   </button>
  <button type="submit" className="btn btn-primary">
     Submit
   </button>
-
 </form>
 
 </div>
 </>
   );
-  
 }

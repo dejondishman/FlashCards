@@ -39,6 +39,8 @@ export default function EditCard() {
     loadCard();
   }, [params.cardId]);
 
+
+
   function handleChange({target}){
     setCard({
       ...card,
@@ -67,7 +69,7 @@ export default function EditCard() {
       </div>
 
       <div>
-        <h1>{deck.name}: Add Card</h1>
+        <h1>Edit Card</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="front">Front</label>
@@ -77,7 +79,7 @@ export default function EditCard() {
               id="front"
               rows="3"
               name="front"
-              placeholder="Front side of card"
+              placeholder={card.front}
               onChange={handleChange}
               value={card.front}
             ></textarea>
@@ -87,7 +89,7 @@ export default function EditCard() {
             <textarea
               className="form-control"
               id="back"
-              placeholder="Back side of card"
+              placeholder={card.back}
               rows="3"
               name="back"
               onChange={handleChange}
@@ -95,11 +97,11 @@ export default function EditCard() {
             ></textarea>
           </div>
           <button
-            type="done"
+            type="cancel"
             className="btn btn-secondary"
             onClick={() => history.push(`/decks/${params.deckId}`)}
           >
-            Done
+            Cancel
           </button>
           <button type="submit" className="btn btn-primary">
             Submit
