@@ -1,33 +1,35 @@
 import React, { useState } from "react";
 
-import { Link, useHistory} from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import {createDeck} from '../utils/api/index' 
 
 export default function CreateDeck({ decks, setDecks }) {
-const history = useHistory()
+
   const initialState= {
     id:decks.length + 1,
     name:"",
     description:""
   }
 
-  
-  
+  const [deck, setDeck] = useState({});
+  let history = useHistory();
+  const params = useParams();
 
-  const [deck, setDeck] = useState(initialState);
-  function handleChange({ target: { name, value } }) {
-    setDeck((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  }
-  function submitHandler(deck) {
-    createDeck(deck).then((savedDeck) =>
-      history.push(`/decks/${savedDeck.id}`)
-    );
+  function handleChange({target}){
+    setDeck({
+      ...deck,
+      [target.name]: target.value
+    })
   }
 
-  
+  async function handleSubmit(event) {
+    event.preventDefault();
+    await createDeck(deck);
+    setDecks([...decks, deck])
+    setDeck(initialState)
+    history.push(`/decks/${decks.length + 1}`)
+  }
+
 //added on click to submit button changed it to link, dont know if it works
   return (
     <>
@@ -43,9 +45,9 @@ const history = useHistory()
       </div>
       <div>
         <h1>Create Deck</h1>
-        <form onSubmit={submitHandler}>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="exampleFormControlInput1">Name</label>
+            <label for="exampleFormControlInput1">Name</label>
             <input
               type="text"
               className="form-control"
@@ -57,7 +59,7 @@ const history = useHistory()
             />
           </div>
           <div className="form-group">
-            <label htmlFor="exampleFormControlTextarea1">Description</label>
+            <label for="exampleFormControlTextarea1">Description</label>
             <textarea
               className="form-control"
               name="description"

@@ -15,7 +15,11 @@ export default function Study ({decks} ) {
         description: "",
         cards: []
     }
-   
+    const initializeStateCard={
+        id:"",
+        back:"",
+        id:"",
+    }
     const params = useParams();
     const [deck, setDeck] = useState(initalizeState); 
     const[currentIndex, setCurrentIndex]= useState(0)
@@ -30,9 +34,9 @@ export default function Study ({decks} ) {
     }, [params.deckId]);
     
     function flipHandler(){
-        if(front ==="front"){
+        if(front =="front"){
          setFront("back") 
-        } else if(front === "back"){
+        } else if(front == "back"){
             setFront("front");
         }
     }
@@ -62,8 +66,8 @@ export default function Study ({decks} ) {
           <div className="card-body">
             <h5 className="card-title">Card {currentIndex + 1} of {deck.cards.length}</h5>
             <p className="card-text">{deck.cards[currentIndex]?.[front]}</p>
-            <button className="btn btn-secondary" onClick={flipHandler}>Flip</button>
-            {front === "back" && <button className="btn btn-primary" onClick={nextHandler}>Next</button> }
+            <button class="btn btn-secondary" onClick={flipHandler}>Flip</button>
+            {front == "back" && <button className="btn btn-primary" onClick={nextHandler}>Next</button> }
           </div>
         </div>
 

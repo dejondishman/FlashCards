@@ -27,7 +27,7 @@ function Home ({decks, setDecks}){
   }
   loadDecks();
   return () => abortController.abort();
-}, [setDecks]);
+}, []);
 
 
 return (

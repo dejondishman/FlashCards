@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
-import { Route, Switch, useParams } from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 import Home from "./Home";
 import CreateDeck from "../Content/CreateDeck";
 import Study from "../Studying/Study";
@@ -9,7 +9,7 @@ import Deck from "../Content/Deck";
 import EditDeck from "../Content/EditDeck";
 import AddCard from "../Content/AddCard";
 import EditCard from "../Content/EditCard";
-import {  listDecks, API_BASE_URL } from "../utils/api/index";
+import {  listDecks} from "../utils/api/index";
 
 
 export default function Layout() {
